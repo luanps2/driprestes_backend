@@ -9,13 +9,13 @@ const handlebars = require('express-handlebars');
 const app = express();
 const urlencondeParser = bodyParser.urlencoded({ extended: false });
 
-require('./model/index')//Importação do sequelize
+// require('./model/index')//Importação do sequelize
 
 
 
 //------------------------Conexão com o banco Heroku-------------------------------------------
 
-const sql = mysql.createConnection({
+const sql = mysql.createPool({
     host: 'us-cdbr-east-04.cleardb.com',
     user: 'b73be7f80e548e',
     password: '61138a22',
@@ -112,11 +112,17 @@ app.get("/updateCategorias/:categoria_id", function (req, res) {
 
 //Atualizar dados
 app.post("/controllerUpdateCategorias", urlencondeParser, function (req, res) {
-    sql.query("update controllerUpdateCategoriascategorias set nome_categoria=? where categoria_id=?",
+    sql.query("update categorias set nome_categoria=? where categoria_id=?",
     [req.body.nome_categoria,  
         req.body.categoria_id]);
     res.render("/controllerUpdateCategorias");
 });
+
+//Delete
+app.get('/deletarCategorias/:categoria_id', function (req, res) { 
+    sql.query("delete from categorias where categoria_id=?", 
+    [req.params.categoria_id]); 
+res.render('deletarCategorias'); });
 
 
 //------------------------Cliente-------------------------------------------
@@ -168,17 +174,17 @@ app.get("/updateCliente/:cliente_id", function (req, res) {
             nome_cliente: results[0].nome_cliente, 
             cel_cliente: results[0].cel_cliente, 
             email_cliente: results[0].email_cliente, 
-            nome_cliente: results[0].nome_cliente, 
-            nome_cliente: results[0].nome_cliente, 
-            nome_cliente: results[0].nome_cliente, 
-            nome_cliente: results[0].nome_cliente, 
+            senha_cliente: results[0].senha_cliente, 
+            datanasc_cliente: results[0].datanasc_cliente, 
+            rg_cliente: results[0].rg_cliente, 
+            cpf_cliente: results[0].cpf_cliente, 
             });
     });
 });
 
 //Atualizar dados
 app.post("/controllerUpdateCliente", urlencondeParser, function (req, res) {
-    sql.query("update controllerUpdateCliente cliente set nome_cliente=? where cliente_id=?",
+    sql.query("update cliente set nome_cliente=? where cliente_id=?",
     [req.body.nome_cliente,  
         req.body.cliente_id]);
     res.render("/controllerUpdateCliente");
