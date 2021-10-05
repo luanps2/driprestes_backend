@@ -7,7 +7,27 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const handlebars = require('express-handlebars');
 const app = express();
+
 const urlencondeParser = bodyParser.urlencoded({ extended: false });
+
+//------------------------Swagger-------------------------------------------
+
+const swaggerUI = require('swagger-ui-express');
+const swaggerFile = require('./swagger/swagger_output.json');
+
+const mainRoutes = require('./');
+
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
+app.use(express.json());
+
+
+app.use(express.json());
+// app.use('/', mainRoutes);
+
+const router = express.Router();
+
+module.exports = router;
 
 // require('./model/index')//Importação do sequelize
 
