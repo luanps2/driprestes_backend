@@ -1,0 +1,4 @@
+Username: b73be7f80e548e
+Password: 61138a22
+Host: us-cdbr-east-04.cleardb.com
+Database: heroku_e27246f552cf39b
