@@ -12,22 +12,22 @@ const urlencondeParser = bodyParser.urlencoded({ extended: false });
 
 //------------------------Swagger-------------------------------------------
 
-const swaggerUI = require('swagger-ui-express');
-const swaggerFile = require('./swagger/swagger_output.json');
+// const swaggerUI = require('swagger-ui-express');
+// const swaggerFile = require('./swagger/swagger_output.json');
 
-const mainRoutes = require('./');
+// const mainRoutes = require('./');
 
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+// app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
-app.use(express.json());
+// app.use(express.json());
 
 
-app.use(express.json());
-// app.use('/', mainRoutes);
+// app.use(express.json());
+// // app.use('/', mainRoutes);
 
-const router = express.Router();
+// const router = express.Router();
 
-module.exports = router;
+// module.exports = router;
 
 // require('./model/index')//Importação do sequelize
 
@@ -156,8 +156,12 @@ app.get("/inserirCliente", function (req, res) {
 })
 
 //Rota post/insert sql Cliente
+
+
+
 app.post("/controllerFormCliente", urlencondeParser, function (req, res) {
-    sql.query("insert into cliente values(?,?,?,?,?,?,?,?,?)",
+    try {
+        sql.query("insert into cliente values(?,?,?,?,?,?,?,?,?)",
         [req.body.cliente_id,
         req.body.endereco_cliente,
         req.body.nome_cliente,
@@ -170,6 +174,10 @@ app.post("/controllerFormCliente", urlencondeParser, function (req, res) {
 
     res.render('controllerFormCliente');
     console.log(req.body.nome_cliente);
+    } catch (error) {
+        alert(error);
+    }
+   
 });
 
 //Rota select sql cliente
@@ -211,6 +219,11 @@ app.post("/controllerUpdateCliente", urlencondeParser, function (req, res) {
 });
 
 
+//Delete
+app.get('/deletarCliente/:cliente_id', function (req, res) { 
+    sql.query("delete from cliente where cliente_id=?", 
+    [req.params.cliente_id]); 
+res.render('deletarCliente'); });
 
 
 //------------------------Pagamento-------------------------------------------
